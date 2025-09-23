@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useState, useActionState } from 'react';
 import { Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { handleAccessCodeValidation, type FormState } from '@/app/actions';
 
@@ -15,7 +14,7 @@ const initialState: FormState = {
 };
 
 export function AccessForm() {
-  const [state, formAction] = useFormState(
+  const [state, formAction] = useActionState(
     handleAccessCodeValidation,
     initialState
   );

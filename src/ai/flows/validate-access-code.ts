@@ -35,15 +35,15 @@ const getPasswordFromBlob = ai.defineTool({
   outputSchema: z.string(),
 }, async () => {
   try {
-    const blobSasUrl = process.env.BLOB_SAS_URL;
-    if (!blobSasUrl) {
-      throw new Error('BLOB_SAS_URL environment variable is not set.');
+    const blobToken = process.env.Game1_READ_WRITE_TOKEN;
+    if (!blobToken) {
+      throw new Error('Game1_READ_WRITE_TOKEN environment variable is not set.');
     }
 
     const { blobs } = await list({
       prefix: 'Connection/mdp.md',
       limit: 1,
-      token: blobSasUrl
+      token: blobToken
     });
 
     if (blobs.length === 0) {

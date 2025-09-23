@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useActionState } from 'react';
-import { Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
+import { Lock, Eye, EyeOff, AlertTriangle, ArrowRight } from 'lucide-react';
 import { handleAccessCodeValidation, type FormState } from '@/app/actions';
 
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const initialState: FormState = {
@@ -33,9 +33,6 @@ export function AccessForm() {
         <div className="flex flex-col items-center space-y-4 w-full">
           <div className="relative w-full max-w-xs flex items-center border-b border-border">
             <Lock className="h-5 w-5 text-muted-foreground" />
-            <Label htmlFor="accessCode" className="sr-only">
-              Code d'accès
-            </Label>
             <Input
               id="accessCode"
               name="accessCode"
@@ -63,6 +60,9 @@ export function AccessForm() {
                 <Eye className="h-5 w-5" />
               )}
             </button>
+            <Button type="submit" size="icon" variant="ghost" className="text-muted-foreground hover:text-foreground">
+              <ArrowRight className="h-5 w-5" />
+            </Button>
           </div>
         </div>
 

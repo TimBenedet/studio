@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { list, head } from '@vercel/blob';
 
 const ValidateAccessCodeInputSchema = z.object({
   accessCode: z.string().describe('The access code entered by the user.'),
@@ -27,41 +28,55 @@ export async function validateAccessCode(input: ValidateAccessCodeInput): Promis
   return validateAccessCodeFlow(input);
 }
 
-const getVercelBlobData = ai.defineTool({
-  name: 'getVercelBlobData',
-  description: 'Retrieves data from a Vercel Blob storage.',
-  inputSchema: z.object({
-    key: z.string().describe('The key to access the data in Vercel Blob storage.'),
-  }),
+const getPasswordFromBlob = ai.defineTool({
+  name: 'getPasswordFromBlob',
+  description: 'Retrieves the password from the mdp.md file in Vercel Blob storage.',
+  inputSchema: z.object({}),
   outputSchema: z.string(),
-}, async (input) => {
-  // TODO: Implement the actual retrieval of data from Vercel Blob.
-  // This is a placeholder implementation.
-  const accessCode = process.env.HAVILAND_ACCESS_CODE;
-  const accessLevel = process.env.HAVILAND_ACCESS_LEVEL;
+}, async () => {
+  try {
+    const blobSasUrl = process.env.BLOB_SAS_URL;
+    if (!blobSasUrl) {
+      throw new Error('BLOB_SAS_URL environment variable is not set.');
+    }
 
-  if (!accessCode || !accessLevel) {
-    return JSON.stringify({isValid: false, accessLevel: 'none', reason: 'Vercel Blob configuration missing.'});
+    const { blobs } = await list({
+      prefix: 'Connection/mdp.md',
+      limit: 1,
+      token: blobSasUrl
+    });
+
+    if (blobs.length === 0) {
+      throw new Error('Password file not found in Vercel Blob.');
+    }
+
+    const passwordFile = blobs[0];
+    const response = await fetch(passwordFile.url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch password file: ${response.statusText}`);
+    }
+    const password = await response.text();
+    return password.trim();
+  } catch (error) {
+    console.error('Error fetching password from Vercel Blob:', error);
+    return '';
   }
-  
-  return JSON.stringify({accessCode, accessLevel});
 });
 
 const validateAccessCodePrompt = ai.definePrompt({
   name: 'validateAccessCodePrompt',
   input: {schema: ValidateAccessCodeInputSchema},
   output: {schema: ValidateAccessCodeOutputSchema},
-  tools: [getVercelBlobData],
+  tools: [getPasswordFromBlob],
   prompt: `You are an access control system for the Archive of Professor L. Haviland.
   A user has entered an access code, and your task is to validate it against the credentials stored securely.
 
-  First, use the getVercelBlobData tool to retrieve the valid access code and associated access level.
-  The tool will return a JSON string containing the "accessCode" and "accessLevel" keys.
+  First, use the getPasswordFromBlob tool to retrieve the valid access code.
 
   Compare the user-provided access code ({{accessCode}}) with the valid access code retrieved from the tool.
 
-  If the access codes match, return isValid as true, and set accessLevel to the retrieved access level.
-  If the access codes do not match, return isValid as false, set accessLevel to "none", and provide a reason why access was denied.
+  If the access codes match, return isValid as true, and set accessLevel to "full".
+  If the access codes do not match, return isValid as false, set accessLevel to "none", and provide a reason why access was denied in French, like "Code d'accès incorrect.".
 
   Ensure that the output is a valid JSON object conforming to the ValidateAccessCodeOutputSchema.
 `,

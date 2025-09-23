@@ -33,10 +33,7 @@ export function AccessForm() {
         <div className="flex flex-col items-center space-y-4 w-full">
           <div className="relative w-full max-w-xs flex items-center border-b border-border">
             <Lock className="h-5 w-5 text-muted-foreground" />
-            <Label
-              htmlFor="accessCode"
-              className="font-headline text-center flex-grow mx-2"
-            >
+            <Label htmlFor="accessCode" className="sr-only">
               Code d'accès
             </Label>
             <Input
@@ -44,8 +41,9 @@ export function AccessForm() {
               name="accessCode"
               type={isPasswordVisible ? 'text' : 'password'}
               required
-              className="bg-transparent border-0 rounded-none text-center text-2xl font-code tracking-widest focus-visible:ring-0 focus-visible:ring-offset-0 w-0 h-0 p-0 absolute"
+              className="bg-transparent border-0 rounded-none text-center text-xl font-headline tracking-widest focus-visible:ring-0 focus-visible:ring-offset-0 flex-grow mx-2 placeholder:text-foreground/50 placeholder:font-headline"
               autoComplete="off"
+              placeholder="Code d'accès"
             />
             <button
               type="button"

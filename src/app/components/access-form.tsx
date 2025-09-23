@@ -21,16 +21,16 @@ export function AccessForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-xl">
       <div className="text-center">
-        <h1 className="text-4xl font-headline text-primary mb-2">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap">
           Archive du Professeur L. Haviland
         </h1>
         <div className="w-full h-px bg-border my-8" />
       </div>
       
-      <form action={formAction} className="space-y-6 mt-16">
-        <div className="relative">
+      <form action={formAction} className="space-y-6 mt-16 flex flex-col items-center">
+        <div className="relative w-full max-w-sm">
           <Label
             htmlFor="accessCode"
             className="font-body absolute -top-3 left-1/2 -translate-x-1/2 bg-background px-2 text-muted-foreground"

@@ -31,20 +31,21 @@ export function AccessForm() {
       
       <form action={formAction} className="space-y-6 mt-16 flex flex-col items-center w-full">
         <div className="flex flex-col items-center space-y-4 w-full">
-          <Label
-            htmlFor="accessCode"
-            className="font-headline text-muted-foreground"
-          >
-            Code d'accès
-          </Label>
-          <div className="relative w-full max-w-xs">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <div className="relative w-full max-w-xs flex items-center border-b-2 border-border">
+            <Lock className="h-5 w-5 text-muted-foreground" />
+            <Label
+              htmlFor="accessCode"
+              className="font-headline text-muted-foreground text-center flex-grow mx-2"
+            >
+              Code d'accès
+            </Label>
             <Input
               id="accessCode"
               name="accessCode"
               type={isPasswordVisible ? 'text' : 'password'}
               required
-              className="bg-transparent border-0 border-b-2 border-border rounded-none px-10 text-center text-2xl font-code tracking-widest focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="bg-transparent border-0 rounded-none text-center text-2xl font-code tracking-widest focus-visible:ring-0 focus-visible:ring-offset-0 w-0 h-0 p-0 absolute"
+              autoComplete="off"
             />
             <button
               type="button"
@@ -53,7 +54,7 @@ export function AccessForm() {
               onMouseLeave={() => setIsPasswordVisible(false)}
               onTouchStart={() => setIsPasswordVisible(true)}
               onTouchEnd={() => setIsPasswordVisible(false)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              className="text-muted-foreground transition-colors hover:text-foreground"
               aria-label={
                 isPasswordVisible ? 'Hide password' : 'Show password'
               }

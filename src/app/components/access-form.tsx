@@ -31,11 +31,11 @@ export function AccessForm() {
       
       <form action={formAction} className="space-y-6 mt-16 flex flex-col items-center w-full">
         <div className="flex flex-col items-center space-y-4 w-full">
-          <div className="relative w-full max-w-xs flex items-center border-b-2 border-border">
+          <div className="relative w-full max-w-xs flex items-center border-b border-border">
             <Lock className="h-5 w-5 text-muted-foreground" />
             <Label
               htmlFor="accessCode"
-              className="font-headline text-muted-foreground text-center flex-grow mx-2"
+              className="font-headline text-center flex-grow mx-2"
             >
               Code d'accès
             </Label>

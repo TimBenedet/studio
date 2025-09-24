@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useActionState } from 'react';
-import { Lock, Eye, EyeOff, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Lock, Eye, EyeOff, AlertTriangle, ArrowRight, CheckCircle } from 'lucide-react';
 import { handleAccessCodeValidation, type FormState } from '@/app/actions';
 
 import { Input } from '@/components/ui/input';
@@ -66,11 +66,15 @@ export function AccessForm() {
           </div>
         </div>
 
-        {state.message && !state.success && (
-          <Alert variant="destructive" className="bg-transparent border-none text-center">
-            <AlertTriangle className="h-4 w-4 mx-auto" />
-            <AlertTitle className="mt-2">Accès Refusé</AlertTitle>
-            <AlertDescription>{state.message}</AlertDescription>
+        {state.message && (
+          <Alert variant={state.success ? 'default' : 'destructive'} className="bg-transparent border-none text-center">
+            {state.success ? <CheckCircle className="h-4 w-4 mx-auto text-green-500" /> : <AlertTriangle className="h-4 w-4 mx-auto" />}
+            <AlertTitle className={`mt-2 ${state.success ? 'text-green-500' : ''}`}>
+              {state.success ? 'Accès Autorisé' : 'Accès Refusé'}
+            </AlertTitle>
+            <AlertDescription className={state.success ? 'text-green-500' : ''}>
+              {state.message}
+            </AlertDescription>
           </Alert>
         )}
       </form>

@@ -2,7 +2,6 @@
 
 import { validateAccessCode } from '@/ai/flows/validate-access-code';
 import { AccessCodeSchema } from '@/lib/schemas';
-import { redirect } from 'next/navigation';
 
 export type FormState = {
   message: string;
@@ -30,10 +29,13 @@ export async function handleAccessCodeValidation(
     });
 
     if (result.isValid) {
-      redirect('/archive');
+      return {
+        message: 'Accès autorisé',
+        success: true,
+      };
     } else {
       return {
-        message: result.reason || 'Invalid access code.',
+        message: result.reason || 'Accès refusé',
         success: false,
       };
     }

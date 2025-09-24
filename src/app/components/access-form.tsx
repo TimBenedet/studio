@@ -60,7 +60,11 @@ export function AccessForm() {
                 <Eye className="h-5 w-5" />
               )}
             </button>
+<<<<<<< HEAD
             <Button type="submit" size="icon" variant="ghost" className="text-muted-foreground hover:text-foreground focus-visible:ring-0 focus-visible:ring-offset-0">
+=======
+            <Button type="submit" size="icon" variant="ghost" className="text-muted-foreground hover:text-foreground absolute right-0 -bottom-10">
+>>>>>>> 448de895349ee22aba20f4d1446c197090d53723
               <ArrowRight className="h-5 w-5" />
             </Button>
           </div>

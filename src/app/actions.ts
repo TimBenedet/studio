@@ -2,6 +2,7 @@
 
 import { validateAccessCode } from '@/ai/flows/validate-access-code';
 import { AccessCodeSchema } from '@/lib/schemas';
+import { redirect } from 'next/navigation';
 
 export type FormState = {
   message: string;
@@ -34,11 +35,8 @@ export async function handleAccessCodeValidation(
     console.log('[Action Info] Received result from flow:', result);
 
     if (result.isValid) {
-      console.log('[Action Success] Access granted.');
-      return {
-        message: 'Accès autorisé',
-        success: true,
-      };
+      console.log('[Action Success] Access granted. Redirecting to /archive');
+      redirect('/archive');
     } else {
       console.log('[Action Failure] Access denied. Reason:', result.reason);
       return {

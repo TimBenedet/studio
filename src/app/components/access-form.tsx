@@ -67,14 +67,25 @@ export function AccessForm() {
         </div>
 
         {state.message && (
-          <Alert variant={state.success ? 'default' : 'destructive'} className="bg-transparent border-none text-center">
-            {state.success ? <CheckCircle className="h-4 w-4 mx-auto text-green-500" /> : <AlertTriangle className="h-4 w-4 mx-auto" />}
-            <AlertTitle className={`mt-2 ${state.success ? 'text-green-500' : ''}`}>
-              {state.success ? 'Accès Autorisé' : 'Accès Refusé'}
-            </AlertTitle>
-            <AlertDescription className={state.success ? 'text-green-500' : ''}>
-              {state.message}
-            </AlertDescription>
+          <Alert variant={state.success ? 'default' : 'destructive'} className="bg-transparent border-none text-center p-0">
+            {state.success ? (
+               <div className="flex items-center justify-center text-green-500">
+                <AlertDescription className="text-green-500">
+                  {state.message}
+                </AlertDescription>
+                <CheckCircle className="h-4 w-4 ml-2" />
+              </div>
+            ) : (
+              <>
+                <AlertTriangle className="h-4 w-4 mx-auto" />
+                <AlertTitle className="mt-2">
+                  Accès Refusé
+                </AlertTitle>
+                <AlertDescription>
+                  {state.message}
+                </AlertDescription>
+              </>
+            )}
           </Alert>
         )}
       </form>

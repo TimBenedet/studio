@@ -25,6 +25,7 @@ const ValidateAccessCodeOutputSchema = z.object({
 export type ValidateAccessCodeOutput = z.infer<typeof ValidateAccessCodeOutputSchema>;
 
 export async function validateAccessCode(input: ValidateAccessCodeInput): Promise<ValidateAccessCodeOutput> {
+  console.log(`[Flow Start] Initiating access code validation for code: "${input.accessCode}"`);
   return validateAccessCodeFlow(input);
 }
 
@@ -34,31 +35,40 @@ const getPasswordFromBlob = ai.defineTool({
   inputSchema: z.object({}),
   outputSchema: z.string(),
 }, async () => {
+  console.log('[Tool Start] Executing getPasswordFromBlob.');
   try {
     const blobToken = process.env.Game1_READ_WRITE_TOKEN;
     if (!blobToken) {
+      console.error('[Tool Error] Game1_READ_WRITE_TOKEN environment variable is not set.');
       throw new Error('Game1_READ_WRITE_TOKEN environment variable is not set.');
     }
+    console.log('[Tool Info] Vercel Blob token found.');
 
+    console.log('[Tool Info] Listing blobs with prefix: Connection/mdp.md');
     const { blobs } = await list({
       prefix: 'Connection/mdp.md',
       limit: 1,
       token: blobToken
     });
+    console.log(`[Tool Info] Found ${blobs.length} blob(s).`);
 
     if (blobs.length === 0) {
+      console.warn('[Tool Warning] Password file not found in Vercel Blob.');
       return 'ERROR: Password file not found in Vercel Blob.';
     }
 
     const passwordFile = blobs[0];
+    console.log(`[Tool Info] Fetching password file from URL: ${passwordFile.url}`);
     const response = await fetch(passwordFile.url);
     if (!response.ok) {
+        console.error(`[Tool Error] Failed to fetch password file. Status: ${response.status} ${response.statusText}`);
         return `ERROR: Failed to fetch password file: ${response.statusText}`;
     }
     const password = await response.text();
+    console.log('[Tool Success] Successfully fetched and read password file.');
     return password.trim();
   } catch (error: any) {
-    console.error('Error fetching password from Vercel Blob:', error);
+    console.error('[Tool Exception] An exception occurred while fetching the password:', error);
     return `ERROR: An exception occurred while fetching the password: ${error.message}`;
   }
 });
@@ -91,7 +101,9 @@ const validateAccessCodeFlow = ai.defineFlow(
     outputSchema: ValidateAccessCodeOutputSchema,
   },
   async input => {
+    console.log('[Flow Info] Executing validateAccessCodePrompt.');
     const {output} = await validateAccessCodePrompt(input);
+    console.log('[Flow End] Prompt execution finished. Result:', output);
     return output!;
   }
 );

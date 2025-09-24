@@ -29,7 +29,7 @@ export function AccessForm() {
         <div className="w-full h-px bg-border my-8" />
       </div>
       
-      <form action={formAction} className="space-y-6 mt-16 flex flex-col items-center w-full">
+      <form action={formAction} className="space-y-6 mt-8 flex flex-col items-center w-full">
         <div className="flex flex-col items-center space-y-4 w-full">
           <div className="relative w-full max-w-xs flex items-center border-b border-border">
             <Lock className="h-5 w-5 text-muted-foreground" />

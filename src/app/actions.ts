@@ -44,7 +44,10 @@ export async function handleAccessCodeValidation(
         success: false,
       };
     }
-  } catch (error) {
+  } catch (error: any) {
+    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+      throw error;
+    }
     console.error('[Action Exception] An unexpected error occurred:', error);
     return {
       message: 'An unexpected error occurred while verifying the code.',

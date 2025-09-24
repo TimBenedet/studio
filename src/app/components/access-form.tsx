@@ -23,7 +23,7 @@ export function AccessForm() {
   return (
     <div className="w-full max-w-xl flex flex-col items-center">
       <div className="text-center">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap -mt-24">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap -mt-64">
           Archive du Professeur L. Haviland
         </h1>
         <div className="w-full h-px bg-border my-8" />

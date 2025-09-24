@@ -47,20 +47,19 @@ const getPasswordFromBlob = ai.defineTool({
     });
 
     if (blobs.length === 0) {
-      throw new Error('Password file not found in Vercel Blob.');
+      return 'ERROR: Password file not found in Vercel Blob.';
     }
 
     const passwordFile = blobs[0];
     const response = await fetch(passwordFile.url);
     if (!response.ok) {
-      throw new Error(`Failed to fetch password file: ${response.statusText}`);
+        return `ERROR: Failed to fetch password file: ${response.statusText}`;
     }
     const password = await response.text();
     return password.trim();
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching password from Vercel Blob:', error);
-    // Return an empty string to allow the prompt to handle the failure gracefully.
-    return '';
+    return `ERROR: An exception occurred while fetching the password: ${error.message}`;
   }
 });
 
@@ -74,11 +73,11 @@ const validateAccessCodePrompt = ai.definePrompt({
 
   First, use the getPasswordFromBlob tool to retrieve the valid access code.
 
-  If the tool returns an empty string or fails, it means the password could not be retrieved. In this case, return isValid as false, accessLevel as "none", and the reason "System error: could not retrieve credentials."
+  The tool will return the password as a string. If the string starts with "ERROR:", it means the password could not be retrieved. In this case, return isValid as false, accessLevel as "none", and the reason "System error: could not retrieve credentials."
 
   Compare the user-provided access code ({{accessCode}}) with the valid access code retrieved from the tool.
 
-  If the access codes match, return isValid as true, and set accessLevel to "full".
+  If the access codes match, return isValid as true, and set accessLevel to "full", and the reason to "Accès autorisé".
   If the access codes do not match, return isValid as false, set accessLevel to "none", and provide a reason why access was denied in French, like "Code d'accès incorrect.".
 
   Ensure that the output is a valid JSON object conforming to the ValidateAccessCodeOutputSchema.

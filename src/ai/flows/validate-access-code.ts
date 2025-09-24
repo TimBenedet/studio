@@ -10,7 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { list, head } from '@vercel/blob';
+import { list } from '@vercel/blob';
 
 const ValidateAccessCodeInputSchema = z.object({
   accessCode: z.string().describe('The access code entered by the user.'),
@@ -59,6 +59,7 @@ const getPasswordFromBlob = ai.defineTool({
     return password.trim();
   } catch (error) {
     console.error('Error fetching password from Vercel Blob:', error);
+    // Return an empty string to allow the prompt to handle the failure gracefully.
     return '';
   }
 });
@@ -72,6 +73,8 @@ const validateAccessCodePrompt = ai.definePrompt({
   A user has entered an access code, and your task is to validate it against the credentials stored securely.
 
   First, use the getPasswordFromBlob tool to retrieve the valid access code.
+
+  If the tool returns an empty string or fails, it means the password could not be retrieved. In this case, return isValid as false, accessLevel as "none", and the reason "System error: could not retrieve credentials."
 
   Compare the user-provided access code ({{accessCode}}) with the valid access code retrieved from the tool.
 

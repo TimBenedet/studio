@@ -23,7 +23,7 @@ export function AccessForm() {
   return (
     <div className="w-full max-w-xl flex flex-col items-center">
       <div className="text-center">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap -mt-80">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap -mt-48 md:-mt-80">
           Archive du Professeur L. Haviland
         </h1>
         <div className="w-full h-px bg-border my-8" />
@@ -76,15 +76,15 @@ export function AccessForm() {
                 <CheckCircle className="h-4 w-4 ml-2" />
               </div>
             ) : (
-              <>
-                <AlertTriangle className="h-4 w-4 mx-auto" />
-                <AlertTitle className="mt-2">
-                  Accès Refusé
-                </AlertTitle>
-                <AlertDescription>
-                  {state.message}
-                </AlertDescription>
-              </>
+              <div className="flex flex-col items-center justify-center">
+                 <AlertTriangle className="h-4 w-4" />
+                 <AlertTitle className="mt-2">
+                   Accès Refusé
+                 </AlertTitle>
+                 <AlertDescription>
+                   {state.message}
+                 </AlertDescription>
+              </div>
             )}
           </Alert>
         )}

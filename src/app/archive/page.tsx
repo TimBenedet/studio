@@ -12,10 +12,10 @@ import { FileText } from 'lucide-react';
 
 export default function ArchivePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-4 pt-12 md:p-8 md:pt-12">
+    <main className="flex min-h-screen flex-col items-center justify-start p-4 pt-16 md:p-8 md:pt-24">
       <div className="w-full max-w-xl flex flex-col items-center">
         <div className="text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-headline text-primary mb-2 whitespace-nowrap">
             Archive du Professeur L. Haviland
           </h1>
           <div className="w-full h-px bg-border my-8" />

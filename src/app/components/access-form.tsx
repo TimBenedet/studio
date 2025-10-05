@@ -22,7 +22,7 @@ export function AccessForm() {
 
   return (
     <div className="w-full max-w-xl flex flex-col items-center">
-      <div className="w-full h-px bg-border my-8" />
+      <div className="w-full h-px bg-border my-4" />
       
       <form action={formAction} className="space-y-6 mt-8 flex flex-col items-center w-full">
         <div className="flex flex-col items-center space-y-4 w-full">
